@@ -16,7 +16,10 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// Swagger UI
+// OpenAPI/Swagger documentation
+app.get('/api-spec.json', (_req, res) => {
+    res.json(swaggerSpec);
+});
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Get database instance from container
@@ -35,7 +38,8 @@ const PORT = config.PORT;
 if (require.main === module) {
     app.listen(PORT, () => {
         console.log(`Server is running on port ${PORT} in ${appConfig.nodeEnv} mode`);
-        console.log(`Swagger documentation available at http://localhost:${PORT}/api-docs`);
+        console.log(`API documentation available at http://localhost:${PORT}/api-docs`);
+        console.log(`Raw OpenAPI spec available at http://localhost:${PORT}/api-spec.json`);
     });
 }
 
