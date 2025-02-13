@@ -1,6 +1,16 @@
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const rabbitSchema = new mongoose.Schema({
+interface IRabbit {
+    name: string;
+    age: number;
+    height: number;
+    weight: number;
+    gender: 'male' | 'female';
+    description?: string;
+    dateAdded: Date;
+}
+
+const rabbitSchema = new Schema<IRabbit>({
     name: {
         type: String,
         required: true
@@ -29,4 +39,5 @@ const rabbitSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Rabbit', rabbitSchema);
+export const Rabbit = model<IRabbit>('Rabbit', rabbitSchema);
+export type { IRabbit };

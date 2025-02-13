@@ -1,12 +1,33 @@
-const chai = require('chai');
-const chaiHttp = require('chai-http');
-const app = require('../src/server');
-const Rabbit = require('../src/models/rabbit');
-const { expect } = chai;
+import 'reflect-metadata';
+import chai from 'chai';
+import chaiHttp from 'chai-http';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose from 'mongoose';
+import app from '../src/server';
+import { Rabbit } from '../src/models/rabbit';
+import { container } from '../src/config/container';
+import { TYPES } from '../src/types/types';
+import { IDatabase } from '../src/interfaces/IDatabase';
+import type { IConfig } from '../src/config/container';
 
+const { expect } = chai;
 chai.use(chaiHttp);
 
 describe('Rabbits API', () => {
+    let mongoServer: MongoMemoryServer;
+    const database = container.get<IDatabase>(TYPES.IDatabase);
+
+    before(async () => {       
+        mongoServer = await MongoMemoryServer.create();
+        const mongoUri = mongoServer.getUri();
+        await database.connect(mongoUri);
+    });
+
+    after(async () => {
+        await database.disconnect();
+        await mongoServer.stop();
+    });
+
     beforeEach(async () => {
         await Rabbit.deleteMany({});
     });
@@ -18,7 +39,7 @@ describe('Rabbits API', () => {
                 age: 2,
                 height: 30,
                 weight: 2.5,
-                gender: 'male',
+                gender: 'male' as const,
                 description: 'Grey rabbit'
             };
 
