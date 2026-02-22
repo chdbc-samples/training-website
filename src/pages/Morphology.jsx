@@ -15,7 +15,7 @@ function Morphology() {
           </ul>
         </section>
         <figure className="text-center">
-          <img src="https://tut-cikavo.com/images/7_new/young-hare.jpg" alt="Зайці на лузі" className="img-fluid rounded my-4"/>
+          <img src="/images/yang-rabbit.webp" alt="Зайці на лузі" className="img-fluid rounded my-4"/>
           <figcaption className="text-muted">Молодий заяць</figcaption>
         </figure>
       </article>
